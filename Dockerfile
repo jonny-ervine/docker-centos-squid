@@ -12,6 +12,8 @@ RUN rm -f /etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_rsa_key && \
     ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_ecdsa_key && \
     ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key 
 
+RUN echo "root:changeme" | chpasswd
+
 VOLUME /config
 VOLUME /cache
 
