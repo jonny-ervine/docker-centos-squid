@@ -6,16 +6,17 @@ ENV container docker
 
 # Install updates
 RUN yum update -y; yum clean all
-RUN yum install -y openssh-server squid squidGuard calamaris
+RUN yum install -y http://mirror.pnl.gov/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+RUN yum install -y supervisor squid squidGuard calamaris
+RUN yum clean all
 
-RUN rm -f /etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_rsa_key && \
-    ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_ecdsa_key && \
-    ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key 
-
-RUN echo "root:changeme" | chpasswd
+ADD supervisord.conf /etc/supervisord.conf
+ADD squid.ini /etc/supervisord.d/squid.ini
+ADD start.sh /usr/sbin/start/sh
+RUN chmod 755 /usr/sbin/start.sh
 
 VOLUME /config
 VOLUME /cache
 
-EXPOSE 22
-ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+EXPOSE 3128
+ENTRYPOINT ["/usr/sbin/start.sh"]
