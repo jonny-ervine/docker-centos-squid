@@ -12,7 +12,7 @@ RUN yum clean all
 
 ADD supervisord.conf /etc/supervisord.conf
 ADD squid.ini /etc/supervisord.d/squid.ini
-ADD start.sh /usr/sbin/start/sh
+ADD start.sh /usr/sbin/start.sh
 RUN chmod 755 /usr/sbin/start.sh
 
 VOLUME /config
